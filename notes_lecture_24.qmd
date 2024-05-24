@@ -1,0 +1,130 @@
+---
+title: "Recursion"
+subtitle: "STAT 201 Lecture 24"
+author: "Bethel Desta"
+
+format:
+  html:
+    toc: true
+    embed-resources: true
+
+execute:
+  message: false
+  warning: false
+---
+
+# Recursion
+
+- The last topic of the course
+- An important coding concept, just like OOP
+- Unlike OOP, recursion is also a math concept
+
+- Necessary for algorithms (STAT 304)
+- It is also useful to implement more complex tasks in Data Science (STAT 301/303)
+
+
+## 1) Definition
+
+- Recursion (or a recursive function/algorithm) solves a problem by dividing that problem into smaller/simpler instances of its own.
+- A recursive function keeps calling itself for these smaller/simpler instances.
+
+- Each recursive solution MUST have:
+  - At least one base case
+  - At least one recursive case
+- The base case(s) and the recursive case(s) should cover all your valid inputs.
+
+## 2) Example: Factorial
+
+$n! = n * (n - 1)*(n - 2)* ... * 2*1$
+
+```{r}
+factorial_func<- function(x){
+  if(x==1){
+    return(1)
+  }else{
+    return(x*factorial_func(x-1))
+  }
+}
+factorial_func(5)
+```
+
+
+## 3) Last Remarks
+
+- Recursion is very useful tool, especially for algorithms
+
+- However, it takes a LOT of memory
+  - Each time you call a recursive function, it temporarily takes up a certain amount of space in computer memory
+  - When the function keeps recurring, this space in memory keeps growing, without freeing anything up
+  - This memory allocation can keep adding up until the memory is full and the program crashes. This is called STACK OVERFLOW.
+  
+- So, sometimes it is a better idea to use iterative methods, as opposed to recursive methods - an iterative method is something that is implemented by a loop
+
+- Note that all examples and practice problems can be solved using loops (iterative methods)
+
+- The reason for us using is to demonstrate recursive methods on relatively simple examples.
+
+- Overall, the tradeoff between recursive and iterative methods is:
+  - Iterative methods are faster and consume less computer memory
+  - Recursive methods are stronger and they solve some problems that cannot be solved using iterative methods. (More on that in STAT 304)
+  
+## Practice
+
+### Problem 1
+
+Write a recursion function for the Fibonacci Sequence.
+
+The Fibonacci sequence returns the sum of two previous numbers.
+
+- Sequence: 0, 1, 1, 2, 3, 5, 8, 11, ...
+- First base case: F(1) = 0
+- Second base case: F(2) = 1
+- Recursive case: F(n) = F(n-1) + F(n - 2)
+
+```{r}
+fib<- function(x){
+  if(x==1){
+    return(0)
+  }else if(x==2){
+    return(1)
+  }else{
+    return(fib(x-1)+fib(x-2))
+  }
+}
+fib(1)
+fib(2)
+fib(7)
+```
+
+
+### Problem 2
+
+Write a recursive function that counts the number of occurrences of a digit in a number.
+
+- The function should have two inputs: number, digit
+- Example: number: 8670800, digit: 0, output: 3
+
+- We need to repeatedly - compare the last digit with the input digit and then truncate the number
+  - last digit of the number is the remainder when dividing by 10
+  - truncating the number is integer division %/% by 10
+
+- Base case: return(0) when number is 0 (ran out of digits)
+- Recursive case: 
+  - if last_digit == digit, then 1 + run function again
+  - else run function again
+
+```{r}
+digits<- function(number, digit){
+  last<- number
+  if(number==0){
+    return(0)
+  }else if(number%%10==digit){
+    return(1 + digits(number %/% 10, digit))
+  }else{
+    return(digits(number %/% 10, digit))
+  }
+    
+}
+
+digits(54667888,8)
+```
